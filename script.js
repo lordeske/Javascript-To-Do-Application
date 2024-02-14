@@ -22,7 +22,8 @@ let currentTask = {};
 
 const addOrUpdateTask = () => {
     
-    
+        addOrUpdateTaskBtn.innerText = "Add Task";
+
     const dataArrIndex = taskData.findIndex((item) => item.id === currentTask.id);  // if element exist it will return his index 
     // returns -1 if results in not found
     
@@ -38,7 +39,12 @@ const addOrUpdateTask = () => {
     if (dataArrIndex === -1)
     {
         taskData.unshift(taskObj);
-
+        /// creating the new one
+    }
+    else 
+    {
+        taskData[dataArrIndex] = taskObj;
+        //// replacing that object with the new one!! 
     }
 
     updateTaskContainer();
@@ -60,7 +66,7 @@ const updateTaskContainer = () => {
             <p><strong>Date: </strong>${date}</p>
             <p><strong>Description: </strong>${description}</p>
             <button type="button" class="btn" onclick="editTask(this)" >Edit</button> 
-            <button type="button" class="btn" onclick=deleteTask(this)">Delete</button>
+            <button type="button" class="btn" onclick="deleteTask(this)">Delete</button>
 
         </div>`;
 
@@ -73,7 +79,38 @@ const updateTaskContainer = () => {
 const deleteTask = (buttonEl) => {
 
     const dataArrIndex = taskData.findIndex((item) => item.id === buttonEl.parentElement.id);
-    /// checking parent id
+    /// checking parent ID and LIST element ID
+
+    buttonEl.parentElement.remove(); 
+    taskData.splice(dataArrIndex, 1); // removing element from array!!! 
+      
+
+}
+
+
+
+
+const editTask = (buttonEl) => {
+
+
+    const dataArrIndex = taskData.findIndex((item) => item.id === buttonEl.parentElement.id );
+
+
+    currentTask = taskData[dataArrIndex];
+
+    titleInput.value = currentTask.title;
+    dateInput.value = currentTask.date;
+    descriptionInput.value = currentTask.description;
+
+
+
+    addOrUpdateTaskBtn.innerText = "Update Task";
+
+    taskForm.classList.toggle("hidden");
+
+
+
+
 
 }
 
@@ -111,7 +148,14 @@ closeTaskFormBtn.addEventListener("click", ()=> {
     const formInputsContainValues  = titleInput.value || descriptionInput.value || dateInput.value;
     /// check if users entered some value 
     
-    if (formInputsContainValues)
+    const formInputValuesUpdated = titleInput.value !== currentTask.title || dateInput.value !== currentTask.date || descriptionInput.value !== currentTask.description;
+
+    
+
+
+
+
+    if (formInputsContainValues && formInputValuesUpdated)
     {
         confirmCloseDialog.showModal();
     }
@@ -133,7 +177,7 @@ closeTaskFormBtn.addEventListener("click", ()=> {
 
 
         confirmCloseDialog.close();
-        reset();
+        reset()
 
     })
 
