@@ -19,6 +19,57 @@ const taskData  = [];
 let currentTask = {};
 
 
+
+const addOrUpdateTask = () => {
+    
+    
+    const dataArrIndex = taskData.findIndex((item) => item.id === currentTask.id);  // if element exist it will return his index 
+    // returns -1 if results in not found
+    
+    const taskObj = {
+
+        id: `${titleInput.value.toLowerCase().split(' ').join('-')}-${Date.now()}`,  // Foramting id 
+        title : titleInput.value,
+        date : dateInput.value,
+        description : descriptionInput.value
+    
+    };
+
+    if (dataArrIndex === -1)
+    {
+        taskData.unshift(taskObj);
+
+    }
+
+    updateTaskContainer();
+    reset();
+
+}
+
+const updateTaskContainer = () => {
+
+    
+    tasksContainer.innerHTML = "";
+
+
+   taskData.forEach(({id , title, date , description}) => {
+
+    tasksContainer.innerHTML += `
+        <div class="task" id="${id}"> 
+            <p><strong>Title: </strong>${title}</p>
+            <p><strong>Date: </strong>${date}</p>
+            <p><strong>Description: </strong>${description}</p>
+            <button type="button" class="btn">Edit</button> 
+            <button type="button" class="btn">Delete</button>
+
+        </div>`;
+
+   } );
+
+}
+
+
+
 const reset = () => {
 
     titleInput.value  = "";
@@ -30,7 +81,6 @@ const reset = () => {
     /// clearing task after clicking 
 
 }
-
 
 
 openTaskFormBtn.addEventListener("click", ()=>{
@@ -58,7 +108,6 @@ closeTaskFormBtn.addEventListener("click", ()=> {
     else
     {
         reset();
-        
 
     }
 
@@ -86,45 +135,14 @@ closeTaskFormBtn.addEventListener("click", ()=> {
 
 taskForm.addEventListener("submit" , (e)=> {
 
-    e.preventDefault()
+    e.preventDefault();
 
-    const dataArrIndex = taskData.findIndex((item) => item.id === currentTask.id);  // if element exist it will return his index 
-    // returns -1 if results in not found
-    
-    const taskObj = {
-
-    id: `${titleInput.value.toLowerCase().split(' ').join('-')}-${Date.now()}`,  // Foramting id 
-    title : titleInput.value,
-    date : dateInput.value,
-    description : descriptionInput.value
-
-    };
-
-    if (dataArrIndex === -1)
-    {
-        taskData.unshift(taskObj);
-
-    }
+    addOrUpdateTask();
 
 
-   //console.log(taskData);
 
 
-   taskData.forEach(({id , title, date , description}) => {
 
-    tasksContainer.innerHTML += `
-        <div class="task" id="${id}"> 
-            <p><strong>Title: </strong>${title}</p>
-            <p><strong>Date: </strong>${date}</p>
-            <p><strong>Description: </strong>${description}</p>
-            <button type="button" class="btn">Edit</button> 
-            <button type="button" class="btn">Delete</button>
-
-        </div>`;
-
-   } );
-
-
-   taskForm.classList.toggle("hidden");
+   
 
 })
