@@ -19,11 +19,24 @@ const taskData  = [];
 let currentTask = {};
 
 
+const reset = () => {
+
+    titleInput.value  = "";
+    dateInput.value = "";
+    descriptionInput.value = "";
+
+    taskForm.classList.toggle("hidden");
+    currentTask = {};
+    /// clearing task after clicking 
+
+}
+
+
 
 openTaskFormBtn.addEventListener("click", ()=>{
 
 
-    taskForm.classList.toggle("hidden");
+    reset();
 
 
 
@@ -32,7 +45,24 @@ openTaskFormBtn.addEventListener("click", ()=>{
 
 closeTaskFormBtn.addEventListener("click", ()=> {
 
-    confirmCloseDialog.showModal();
+    
+
+
+    const formInputsContainValues  = titleInput.value || descriptionInput.value || dateInput.value;
+    /// check if users entered some value 
+    
+    if (formInputsContainValues)
+    {
+        confirmCloseDialog.showModal();
+    }
+    else
+    {
+        reset();
+        
+
+    }
+
+
     
     cancelBtn.addEventListener("click", ()=> {
         
@@ -44,7 +74,7 @@ closeTaskFormBtn.addEventListener("click", ()=> {
 
 
         confirmCloseDialog.close();
-        taskForm.classList.toggle("hidden");
+        reset();
 
     })
 
