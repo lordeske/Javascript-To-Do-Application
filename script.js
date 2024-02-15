@@ -15,7 +15,7 @@ const discardBtn = document.getElementById("discard-btn");  /// discard (dialog)
 const tasksContainer = document.getElementById("tasks-container");    // output
 
 
-const taskData  = [];
+const taskData  = JSON.parse(localStorage.getItem("data")) || [];
 let currentTask = {};
 
 
@@ -46,6 +46,8 @@ const addOrUpdateTask = () => {
         taskData[dataArrIndex] = taskObj;
         //// replacing that object with the new one!! 
     }
+
+    localStorage.setItem("data" , JSON.stringify(taskData));
 
     updateTaskContainer();
     reset();
@@ -84,7 +86,7 @@ const deleteTask = (buttonEl) => {
     buttonEl.parentElement.remove(); 
     taskData.splice(dataArrIndex, 1); // removing element from array!!! 
       
-
+    localStorage.setItem("data" , JSON.stringify(taskData));
 }
 
 
@@ -103,14 +105,9 @@ const editTask = (buttonEl) => {
     descriptionInput.value = currentTask.description;
 
 
-
     addOrUpdateTaskBtn.innerText = "Update Task";
 
     taskForm.classList.toggle("hidden");
-
-
-
-
 
 }
 
@@ -127,6 +124,11 @@ const reset = () => {
     currentTask = {};
     /// clearing task after clicking 
 
+}
+
+if (taskData.length)
+{
+    updateTaskContainer();
 }
 
 
@@ -196,3 +198,5 @@ taskForm.addEventListener("submit" , (e)=> {
 
 
 })
+
+
